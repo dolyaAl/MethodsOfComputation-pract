@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 set(CORE_NAME NonLin_solve)
 
 set(INCLUDES_PUB 
-includes/header.h)
+includes/header.hpp)
 
 set(SOURCES_PRIV
 source/source.cpp)
