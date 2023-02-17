@@ -3,11 +3,10 @@ cmake_minimum_required(VERSION 3.19)
 set(CORE_NAME NonLin_solve)
 
 set(INCLUDES_PUB 
-	includes/NonLinSolve.hpp)
+	includes/Functions.h)
 
 set(SOURCES_PRIV
-source/source.cpp)
-
+	source/Functions.cpp)
 add_library(${CORE_NAME} STATIC 
 ${INCLUDES_PUB}
 ${SOURCES_PRIV})
