@@ -82,9 +82,29 @@ namespace Functions
 		 * @return vector of roots
 		*/
 		std::vector<ld> secantMethod(ld, std::vector<ld>&);
-		bool initNewtonCoef(std::vector<std::pair<ld, ld>> table, int n, bool add_unit = false);
+		/**
+		 * Initializes coefficients for Newton's interpolation polynomial by table of values |f(x_i)|x_i|
+		 * @param table: table[i].first - func value, table[i].second - point
+		 * @param n: polynomial degree
+		*/
+		void initNewtonCoef(std::vector<std::pair<ld, ld>> table, int n);
+		/**
+		 * Evaluates function value by Newton's polynomial in point x
+		 * note: initialize coefficients before using, use initNewtonCoef function
+		 * @param x: point at which value is evaluated
+		*/
 		ld evaluateNewtonInter(ld x);
-		bool initLagrangeCoef(std::vector<std::pair<ld, ld>> table, int n);
+		/**
+		 * Initializes coefficients for Lagrange interpolation polynomial by table of values |f(x_i)|x_i|
+		 * @param table: table[i].first - func value, table[i].second - point
+		 * @param n: polynomial degree
+		*/
+		void initLagrangeCoef(std::vector<std::pair<ld, ld>> table, int n);
+		/**
+		 * Evaluates function value by Lagrange polynomial in point x
+		 * note: initialize coefficients before using, use initLagrangeCoef function
+		 * @param x: point at which value is evaluated
+		*/
 		ld evaluateLagrangeInter(ld x);
 	};
 	/**

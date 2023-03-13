@@ -210,35 +210,22 @@ std::vector<ld> Functions::Function::secantMethod(ld eps, std::vector<ld>& range
 	return roots;
 }
 
-bool Functions::Function::initNewtonCoef(std::vector<std::pair<ld, ld>> table, int n, bool add_unit)
+void Functions::Function::initNewtonCoef(std::vector<std::pair<ld, ld>> table, int n)
 {
-	if(n + 1 < m_NewtonInterpolationCoef.size())
+	if(!m_NewtonInterpolationCoef.empty())
 	{
-		m_NewtonInterpolationCoef.resize(n + 1);
-		m_NewtonInterpolationUnits.resize(n + 1);
+		m_NewtonInterpolationCoef.clear();
+		m_NewtonInterpolationUnits.clear();
 	}
-	else if (add_unit)
+	for (int i = 0; i < n && i < table.size(); ++i)
 	{
-		m_NewtonInterpolationUnits.push_back((*(table.end() - 1)).second);
-		*(m_NewtonInterpolationCoef.end() - 1) = table.back().first - evaluateNewtonInter(table.back().second);
-		for (int j = 0; j < table.size(); ++j)
+		m_NewtonInterpolationUnits.push_back(table[i].second);
+		m_NewtonInterpolationCoef.push_back(table[i].first - evaluateNewtonInter(table[i].second));
+		for (int j = 0; j < i ; ++j)
 		{
-			*(m_NewtonInterpolationCoef.end() - 1) /= table.back().second - table[j].second;
+			m_NewtonInterpolationCoef[i] /= table[i].second - table[j].second;
 		}
 	}
-	else
-	{
-		for (int i = 0; i < table.size(); ++i)
-		{
-			m_NewtonInterpolationUnits[i] = table[i].second;
-			m_NewtonInterpolationCoef[i] = table[i].first - evaluateNewtonInter(table[i].second);
-			for (int j = 0; j < i ; ++j)
-			{
-				m_NewtonInterpolationCoef[i] /= table[i].second - table[j].second;
-			}
-		}
-	}
-	return true;
 }
 
 ld Functions::Function::evaluateNewtonInter(ld x)
@@ -250,21 +237,51 @@ ld Functions::Function::evaluateNewtonInter(ld x)
 		tmp = m_NewtonInterpolationCoef[i];
 		for (int j = 0; j < i ; ++j)
 		{
-			tmp *= x - m_NewtonInterpolationUnits[i];
+			tmp *= x - m_NewtonInterpolationUnits[j];
 		}
 		res += tmp;
 	}
 	return res;
 }
 
-bool Functions::Function::initLagrangeCoef(std::vector<std::pair<ld, ld>> table, int n)
+void Functions::Function::initLagrangeCoef(std::vector<std::pair<ld, ld>> table, int n)
 {
-	return true;
+	if(!m_LagrangeInterpolationCoef.empty())
+	{
+		m_LagrangeInterpolationCoef.clear();
+		m_LagrangeInterpolationUnits.clear();
+	}
+	for (int i = 0; i < n && i < table.size(); ++i)
+	{
+		m_LagrangeInterpolationUnits.push_back(table[i].second);
+		m_LagrangeInterpolationCoef.push_back(table[i].first);
+		for (int j = 0; j < n && j < table.size(); ++j)
+		{
+			if(j != i)
+			{
+				m_LagrangeInterpolationCoef[i] /= table[i].second - table[j].second;
+			}
+		}
+	}
 }
 
 ld Functions::Function::evaluateLagrangeInter(ld x)
 {
-	return ld();
+	ld res = 0;
+	ld tmp = 0;
+	for (int i = 0; i < m_LagrangeInterpolationUnits.size(); ++i)
+	{
+		tmp = m_LagrangeInterpolationCoef[i];
+		for(int j = 0; j < m_LagrangeInterpolationUnits.size(); ++j)
+		{
+			if (j != i)
+			{
+				tmp *= x - m_LagrangeInterpolationUnits[j];
+			}
+		}
+		res += tmp;
+	}
+	return res;
 }
 
 std::vector<ld> Functions::separateRange(ld left, ld right, int N)
