@@ -1,35 +1,35 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <stack>
 #include <cmath>
 namespace Functions
 {
 	using ld = long double;
 	class Function
 	{
-		std::vector<ld> m_NewtonInterpolationCoef;
-		std::vector<ld> m_NewtonInterpolationUnits;
-		std::vector<ld> m_LagrangeInterpolationCoef;
-		std::vector<ld> m_LagrangeInterpolationUnits;
+		ld (*func_ptr)(ld);
 	public:
 		Function() = default;
+		Function(std::string_view func);
 		/**
 		 * Calculates the function value
 		 * @param x: point at which value is calculated
 		 * @return returns function value at x
 		 */
-		ld evaluate(ld x);
+		ld f(ld x);
 		/**
 		 * Calculates the function derivative value
 		 * @param x: point at which value is calculated
 		 * @return returns derivative value at x
 		 */
-		ld evaluateDer(ld x);
+		ld dfdx(ld x);
 		/**
 		 * Calculates the function second derivative value
 		 * @param x: point at which value is calculated
 		 * @return returns derivative value at x
 		 */
-		ld evaluateSecondDer(ld x);
+		ld d2fdx2(ld x);
 		/**
 		 * Counts function roots of odd multiplicity in range with precision parameter
 		 * @param left: left edge of the range
@@ -78,10 +78,42 @@ namespace Functions
 		 * Finds function roots of odd multiplicity using method
 		 * @param eps: sets the accuracy of the calculation
 		 * @param ranges: vector of the partition points of the interval on which to look for roots.
+		 * @param use_iner_polynom: set true to use Newton's interpolation polynom for evaluating function
 		 * get it from separateRange function in Functions namespace
 		 * @return vector of roots
 		*/
 		std::vector<ld> secantMethod(ld, std::vector<ld>&);
+		void setFunc(ld(*ptr)(ld));
+
+		ld quadrfleftRect(ld left, ld right);
+		ld quadrfrightRect(ld left, ld right);
+		ld quadrfmidRect(ld left, ld right);
+		ld quadrfTrapeze(ld left, ld right);
+		ld quadrfSimpson(ld left, ld right);
+		ld quadrfThreeEighths(ld left, ld right);
+
+		ld NIntleftRect(ld left, ld right, int M);
+		ld NIntrightRect(ld left, ld right, int M);
+		ld NIntmidRect(ld left, ld right, int M);
+		ld NIntTrapeze(ld left, ld right, int M);
+		ld NIntSimpson(ld left, ld right, int M);
+
+		
+	};
+	class IFunction
+	{
+		std::vector<ld> m_NewtonInterpolationCoef;
+		std::vector<ld> m_NewtonInterpolationUnits;
+		std::vector<ld> m_LagrangeInterpolationCoef;
+		std::vector<ld> m_LagrangeInterpolationUnits;
+	public:
+		/**
+		 * Calculates the function value
+		 * @param x: point at which value is calculated
+		 * @return returns function value at x
+		 */
+		ld f(ld x);
+
 		/**
 		 * Initializes coefficients for Newton's interpolation polynomial by table of values |f(x_i)|x_i|
 		 * @param table: table[i].first - func value, table[i].second - point
@@ -106,6 +138,15 @@ namespace Functions
 		 * @param x: point at which value is evaluated
 		*/
 		ld evaluateLagrangeInter(ld x);
+		/**
+		 * Finds function roots of odd multiplicity
+		 * @param eps: sets the accuracy of the calculation
+		 * @param ranges: vector of the partition points of the interval on which to look for roots.
+		 * @param use_iner_polynom: set true to use Newton's interpolation polynom for evaluating function
+		 * get it from separateRange function in Functions namespace
+		 * @return vector of roots
+		*/
+		std::vector<ld> roots(ld, std::vector<ld>&);
 	};
 	/**
 	 * Separates range into N parts

@@ -15,28 +15,28 @@ void doCalc(long double A, long double B,long double eps, int N)
 	cout << setprecision(15);
 	for(auto elem: roots)
 	{
-		cout << elem << endl << "|f(x) - 0| = " << abs(a.evaluate(elem)) << endl;
+		cout << elem << endl << "|f(x) - 0| = " << abs(a.f(elem)) << endl;
 	}
 	cout << endl;
 	roots = a.newtonMethod(eps, ranges);
 	cout << "newton roots" << endl;
 	for(auto elem: roots)
 	{
-		cout << elem << endl << "|f(x) - 0| = " << abs(a.evaluate(elem)) << endl;
+		cout << elem << endl << "|f(x) - 0| = " << abs(a.f(elem)) << endl;
 	}
 	cout << endl;
 	roots = a.newtonModMethod(eps, ranges);
 	cout << "newtonMod roots" << endl;
 	for(auto elem: roots)
 	{
-		cout << elem << endl << "|f(x) - 0| = " << abs(a.evaluate(elem)) << endl;
+		cout << elem << endl << "|f(x) - 0| = " << abs(a.f(elem)) << endl;
 	}
 	cout << endl;
 	roots = a.secantMethod(eps, ranges);
 	cout << "secant roots" << endl;
 	for(auto elem: roots)
 	{
-		cout << elem << endl << "|f(x) - 0| = " << abs(a.evaluate(elem)) << endl;
+		cout << elem << endl << "|f(x) - 0| = " << abs(a.f(elem)) << endl;
 	}
 	cout << endl;
 }

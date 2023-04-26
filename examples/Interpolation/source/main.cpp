@@ -7,7 +7,7 @@ using namespace std;
 
 vector<pair<Functions::ld, Functions::ld>> table;
 vector<pair<Functions::ld, Functions::ld>> nearest_table;
-Functions::Function func;
+Functions::IFunction func;
 
 Functions::ld f(Functions::ld x)
 {
