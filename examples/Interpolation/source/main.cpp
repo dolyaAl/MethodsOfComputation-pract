@@ -8,7 +8,7 @@ using namespace std;
 vector<pair<Functions::ld, Functions::ld>> table;
 vector<pair<Functions::ld, Functions::ld>> nearest_table;
 Functions::IFunction func;
-
+Functions::Function ffff("ffff");
 Functions::ld f(Functions::ld x)
 {
 	return 1 - exp(-2 * x);

@@ -3,15 +3,25 @@
 #include <string>
 #include <stack>
 #include <cmath>
+#include <expression.h>
+#include <fparser.hh>
+#include <parser.h>
+#include <Matrix.hpp>
 namespace Functions
 {
 	using ld = long double;
+	class Weight;
 	class Function
 	{
-		ld (*func_ptr)(ld);
+	protected:
+		FunctionParser_ld* fp;
+		Ev3::ExpressionParser* ep;
+		std::vector< std::pair<Ev3::Expression*, FunctionParser_ld* >> derivates;
+		
 	public:
-		Function() = default;
-		Function(std::string_view func);
+		Function();
+		Function(const std::string& fu);
+		~Function();
 		/**
 		 * Calculates the function value
 		 * @param x: point at which value is calculated
@@ -19,17 +29,12 @@ namespace Functions
 		 */
 		ld f(ld x);
 		/**
-		 * Calculates the function derivative value
+		 * Calculates the function nth derivative value
 		 * @param x: point at which value is calculated
 		 * @return returns derivative value at x
 		 */
-		ld dfdx(ld x);
-		/**
-		 * Calculates the function second derivative value
-		 * @param x: point at which value is calculated
-		 * @return returns derivative value at x
-		 */
-		ld d2fdx2(ld x);
+		ld Df(ld x, int n);
+		void updateFunc(const std::string& new_fun);
 		/**
 		 * Counts function roots of odd multiplicity in range with precision parameter
 		 * @param left: left edge of the range
@@ -83,7 +88,6 @@ namespace Functions
 		 * @return vector of roots
 		*/
 		std::vector<ld> secantMethod(ld, std::vector<ld>&);
-		void setFunc(ld(*ptr)(ld));
 
 		ld quadrfleftRect(ld left, ld right);
 		ld quadrfrightRect(ld left, ld right);
@@ -97,6 +101,20 @@ namespace Functions
 		ld NIntmidRect(ld left, ld right, int M);
 		ld NIntTrapeze(ld left, ld right, int M);
 		ld NIntSimpson(ld left, ld right, int M);
+		ld RungeAccSimpson(ld j1, ld j2, int L);
+	private: 
+		std::vector<std::pair<ld, ld>> initInterQF(std::vector<ld> weight_mom, std::vector<ld>& units);
+		std::vector<ld> findOrtPolynomCoefs(std::vector<ld> weight_mom);
+		std::vector<ld> OrtPolynomRoots(ld A, ld B, std::vector<ld> coefs);
+		std::vector<ld> getGaussRoots(int n);
+		std::vector<ld> getGaussCf(int n);
+		void printGaussCf(std::vector<ld>& c, std::vector<ld>& t, ld A, ld B);
+	public:
+		ld NIntInterQF(ld A, ld B, Weight& weight, int n, const std::vector<ld>& units = std::vector<ld>());
+		ld NIntMAGQF(ld A, ld B, Weight& weight, int n);
+		ld NIntGauss(ld A, ld B, int n, bool print = false);
+		ld NIntMeler(int n);
+
 
 		
 	};
@@ -148,7 +166,15 @@ namespace Functions
 		*/
 		std::vector<ld> roots(ld, std::vector<ld>&);
 	};
-	/**
+	class Weight : public Function
+	{
+		std::vector<ld> weight_moms;
+	public:
+		Weight(const std::string weight) :Function(weight) {};
+		std::vector<ld> get_weight_moms(ld A, ld B, int n);
+	};
+	/*
+	* 
 	 * Separates range into N parts
 	 * @param left: left edge of the range
 	 * @param right: right edge of the range
@@ -157,4 +183,7 @@ namespace Functions
 	 * If N = 0, returns empty vector
 	*/
 	std::vector<ld> separateRange(ld left, ld right, int N);
+	long long int factorial(int n);
+	std::vector<ld> solveLin(Matrix<ld> mat, std::vector<ld> b, int n);
+	std::string getNthLeg(int n);
 }

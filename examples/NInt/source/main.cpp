@@ -7,7 +7,6 @@
 using namespace std;
 
 using ld = long double;
-Functions::Function func;
 
 ld sincos(ld x)
 {
@@ -78,12 +77,12 @@ map<string, pair<ld(*)(ld), ld(*)(ld)>> evalf =
 };
 map<string, string> nick_to_name =
 {
-	{"sincos", "sin(x) + cos(2x)"},
+	{"sincos", "sin(x)"},
 	{"consta", "5"},
-	{"lin", "(3/4)x"},
+	{"lin", "(3/4)*x"},
 	{"quadr", "x^2 + x"},
 	{"threes", "x^3 + x^2 + x"},
-	{"e", "e^x"}
+	{"e", "exp(2*x)"}
 };
 
 bool exit(bool exit = false)
@@ -98,7 +97,7 @@ bool exit(bool exit = false)
 
 void do41(ld A, ld B, string func_s)
 {
-	func.setFunc(evalf[func_s].first);
+	Functions::Function func(nick_to_name[func_s] );
 	cout << "f(x) = " << nick_to_name[func_s] << "  A = " << A << "  B = " << B << endl;
 	cout << "Left Rect" << endl;
 	cout << "Numeric: " << func.quadrfleftRect(A, B) << "  Exact: " << evalf[func_s].second(B) - evalf[func_s].second(A) << "  delta = "  << abs(func.quadrfleftRect(A, B) - (evalf[func_s].second(B) - evalf[func_s].second(A))) << endl;
@@ -116,7 +115,7 @@ void do41(ld A, ld B, string func_s)
 }
 void do42(ld A, ld B, int M, string func_s)
 {
-	func.setFunc(evalf[func_s].first);
+	Functions::Function func(nick_to_name[func_s] );
 	ld theor = 0;
 	int r = 0;
 	cout << "f(x) = " << nick_to_name[func_s] << "  A = " << A << "  B = " << B << "  M = " << M << "  h = " << (B-A)/M << endl;
@@ -168,7 +167,7 @@ void do42(ld A, ld B, int M, string func_s)
 }
 void do43(ld A, ld B, int M, ld L, string func_s)
 {
-	func.setFunc(evalf[func_s].first);
+	Functions::Function func(nick_to_name[func_s] );
 	do42(A, B, M, func_s);
 	ld rung = 0;
 	int r = 0;
