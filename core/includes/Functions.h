@@ -20,6 +20,10 @@ namespace Functions
 		
 	public:
 		Function();
+		/**
+		* Constructs function by string fu
+		* @param fu: symbolic representation of the function
+		*/
 		Function(const std::string& fu);
 		~Function();
 		/**
@@ -34,6 +38,10 @@ namespace Functions
 		 * @return returns derivative value at x
 		 */
 		ld Df(ld x, int n);
+		/**
+		* Sets new symbolic representation to the function
+		* @param new_fun: new symbolic representation of the function
+		*/
 		void updateFunc(const std::string& new_fun);
 		/**
 		 * Counts function roots of odd multiplicity in range with precision parameter
@@ -43,6 +51,9 @@ namespace Functions
 		 * @return returns roots count.
 		 * If N = 0, returns empty vector
 		*/
+
+//function roots
+
 		int countRoots(ld left, ld right, int = pow(10, 3));
 		/**
 		 * Finds function roots of odd multiplicity using bisection method
@@ -89,19 +100,79 @@ namespace Functions
 		*/
 		std::vector<ld> secantMethod(ld, std::vector<ld>&);
 
+//quadratic formulas
+
+		/**
+		* Calculates the left rectangle formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfleftRect(ld left, ld right);
+		/**
+		* Calculates the rigth rectangle formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfrightRect(ld left, ld right);
+		/**
+		* Calculates the mid rectangle formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfmidRect(ld left, ld right);
+		/**
+		* Calculates the trapeze formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfTrapeze(ld left, ld right);
+		/**
+		* Calculates the Simpson's formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfSimpson(ld left, ld right);
+		/**
+		* Calculates the Simpson's three eights formula for the function on the interval [left, right]
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld quadrfThreeEighths(ld left, ld right);
 
+//Integration using quadratic formulas
+
+
+		/**
+		* Calculates the function integral on the interval [left, right] by left rectangle method
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld NIntleftRect(ld left, ld right, int M);
+		/**
+		* Calculates the function integral on the interval [left, right] by right rectangle method
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld NIntrightRect(ld left, ld right, int M);
+		/**
+		* Calculates the function integral on the interval [left, right] by mid rectangle method
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld NIntmidRect(ld left, ld right, int M);
+		/**
+		* Calculates the function integral on the interval [left, right] by trapeze method
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld NIntTrapeze(ld left, ld right, int M);
+		/**
+		* Calculates the function integral on the interval [left, right] by Simpson's method
+		* @param left: left edge
+		* @param right: right edge
+		*/
 		ld NIntSimpson(ld left, ld right, int M);
-		ld RungeAccSimpson(ld j1, ld j2, int L);
+
 	private: 
 		std::vector<std::pair<ld, ld>> initInterQF(std::vector<ld> weight_mom, std::vector<ld>& units);
 		std::vector<ld> findOrtPolynomCoefs(std::vector<ld> weight_mom);
@@ -110,14 +181,43 @@ namespace Functions
 		std::vector<ld> getGaussCf(int n);
 		void printGaussCf(std::vector<ld>& c, std::vector<ld>& t, ld A, ld B);
 	public:
+		/**
+		* Calculates the function integral with weight on the interval [A, B] by interpolation quadratic formula 
+		* @param A: left edge
+		* @param B: right edge
+		* @param weight: weight
+		* @param n: the number units of the separation of the interval [A, B]
+		* @param units: units of the separation of interval [A,B] (by deafault an equidistant separation into n units is used)
+		*/
 		ld NIntInterQF(ld A, ld B, Weight& weight, int n, const std::vector<ld>& units = std::vector<ld>());
+		/**
+		* Calculates the function integral with weight on the interval [A, B] by quadratic formula of maximum algebraic accuracy degree 
+		* @param A: left edge
+		* @param B: right edge
+		* @param weight: weight
+		* @param n: algebraic accuracy degree 2n-1
+		*/
 		ld NIntMAGQF(ld A, ld B, Weight& weight, int n);
+		/**
+		* Calculates the function integral with weight on the interval [A, B] by Gaussian quadratic formula 
+		* @param A: left edge
+		* @param B: right edge
+		* @param n: algebraic accuracy degree 2n-1
+		* @param print: if true prints Gaussian coefficients
+		*/
 		ld NIntGauss(ld A, ld B, int n, bool print = false);
-		ld NIntMeler(int n);
+		/**
+		* Calculates the function integral with weight on the interval [A, B] by Mehler quadratic formula 
+		* @param n: algebraic accuracy degree 2n-1
+		*/
+		ld NIntMehler(int n);
 
 
 		
 	};
+
+//Interpolated function
+
 	class IFunction
 	{
 		std::vector<ld> m_NewtonInterpolationCoef;
@@ -166,6 +266,9 @@ namespace Functions
 		*/
 		std::vector<ld> roots(ld, std::vector<ld>&);
 	};
+
+//Weight
+
 	class Weight : public Function
 	{
 		std::vector<ld> weight_moms;
@@ -185,5 +288,9 @@ namespace Functions
 	std::vector<ld> separateRange(ld left, ld right, int N);
 	long long int factorial(int n);
 	std::vector<ld> solveLin(Matrix<ld> mat, std::vector<ld> b, int n);
+	/**
+	* returns Nth degree Legendre polynomial symbolic representation
+	* @param n: polynomial degree
+	*/
 	std::string getNthLeg(int n);
 }

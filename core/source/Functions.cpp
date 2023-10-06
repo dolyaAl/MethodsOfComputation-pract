@@ -333,11 +333,6 @@ ld Functions::Function::NIntSimpson(ld left, ld right, int M)
 	}
 	return res;
 }
-ld Functions::Function::RungeAccSimpson(ld jM, ld jML, int L)
-{
-	int r = 4;
-	return (std::pow(L, r) * jML - jM) / (pow(L, r) - 1);
-}
 
 std::vector<std::pair<ld, ld>> Functions::Function::initInterQF(std::vector<ld> weight_mom, std::vector<ld>& units)
 {
@@ -481,7 +476,7 @@ ld Functions::Function::NIntGauss(ld A, ld B, int n, bool print)
 	}
 	return cf*sum;
 }
-ld Functions::Function::NIntMeler(int n)
+ld Functions::Function::NIntMehler(int n)
 {
 	ld sum = 0;
 	std::cout << "Meler cf = " << acos(-1) / n << std::endl;

@@ -100,13 +100,13 @@ void do52meler()
 	cout << "N4 = ";
 	cin >> n4m;
 	Functions::Function fu(fu_str);
-	auto meler = fu.NIntMeler(n1m);
+	auto meler = fu.NIntMehler(n1m);
 	cout << "NInt[" << fu_str << ", " << n1m << "] = " << meler << endl << "delta = " << abs(tochn - meler) << endl << endl;
-	meler = fu.NIntMeler(n2m);
+	meler = fu.NIntMehler(n2m);
 	cout << "NInt[" << fu_str << ", " << n2m << "] = " << meler << endl << "delta = " << abs(tochn - meler) << endl << endl;
-	meler = fu.NIntMeler(n3m);
+	meler = fu.NIntMehler(n3m);
 	cout << "NInt[" << fu_str << ", " << n3m << "] = " << meler << endl << "delta = " << abs(tochn - meler) << endl << endl;
-	meler = fu.NIntMeler(n4m);
+	meler = fu.NIntMehler(n4m);
 	cout << "NInt[" << fu_str << ", " << n4m << "] = " << meler << endl << "delta = " << abs(tochn - meler) << endl << endl;
 	cout <<  endl;
 
@@ -221,7 +221,7 @@ int main()
 		{
 			string a = "x^" + to_string(i);
 			fu.updateFunc("x");
-			cout <<  fu.NIntMeler(N) << endl;
+			cout <<  fu.NIntMehler(N) << endl;
 		}
 	}
 	*/
